@@ -1,0 +1,6 @@
+# Ignore folder lab (clab-<nama-lab>)
+clab-*/
+
+# Ignore backup configurations yang dibuat otomatis
+*.bak
+*.old
