@@ -1,0 +1,80 @@
+# INSTALL CONTAINER LAB
+#######################################
+curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"
+
+
+# IMPORT CE LAB
+#######################################
+docker import cEOS64-lab-4.32.0F.tar.xz ceos:4.32.0F
+
+# CREATE FILE
+#######################################
+nano evpn-lab.yml
+
+# EDIT YAML FILE
+#######################################
+name: evpn-lab
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 192.168.0.0/24
+
+topology:
+  nodes:
+    # ===== Spine =====
+    spine1:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.0.11
+
+    spine2:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.0.12
+
+    # ===== Leaf =====
+    leaf1:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.0.21
+
+    leaf2:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.0.22
+
+    # ===== Clients =====
+    client1:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 192.168.0.31
+
+    client2:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 192.168.0.32
+
+  links:
+    # Spine ↔ Leaf
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
+    - endpoints: ["spine2:eth1", "leaf1:eth2"]
+    - endpoints: ["spine2:eth2", "leaf2:eth2"]
+
+    # Leaf ↔ Client (data plane)
+    - endpoints: ["leaf1:eth3", "client1:eth1"]
+    - endpoints: ["leaf2:eth3", "client2:eth1"]
+
+
+#DEPLOY
+#######################################
+sudo containerlab deploy -t evpn-lab.yml
+
+#DESTROY
+#######################################
+sudo containerlab destroy -t evpn-lab.yml
+sudo containerlab destroy -t evpn-lab.yml --cleanup
+
+#GRAPH BAWAAN
+#######################################
+sudo containerlab graph -t evpn-lab.yml

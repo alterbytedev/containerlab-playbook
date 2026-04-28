@@ -1,0 +1,14 @@
+# 🚀 CONTAINERLAB SHORT CHEATSHEET
+
+```bash
+sudo clab deploy -t evpn-lab.yml          # Build lab sesuai file YAML
+sudo clab inspect -t evpn-lab.yml         # Cek tabel IP management & status node
+sudo clab graph -t evpn-lab.yml           # Buka Web GUI di http://<IP>:5001
+docker exec -it clab-evpn-lab-spine1 Cli  # Masuk langsung ke console Arista
+ssh admin@192.168.0.11                    # Akses via SSH ke management IP
+sudo clab save -t evpn-lab.yml            # Backup running-config ke folder host
+sudo clab destroy -t evpn-lab.yml --cl    # Hapus lab & bersihkan file log
+sudo clab destroy --all --cl              # Hapus paksa semua lab di sistem
+sudo chmod 666 /var/run/docker.sock       # Fix error permission/GUI forbidden
+
+sudo clab destroy --all --cl              # Hapus paksa semua lab di sistem
