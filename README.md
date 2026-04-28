@@ -3,6 +3,7 @@
 ### 1. INSTALL CONTAINERLAB
 ```bash
 curl -sL [https://containerlab.dev/setup](https://containerlab.dev/setup) | sudo -E bash -s "all"
+```
 2. IMPORT ARISTA cEOS IMAGE
 Bash
 # Pastikan file .tar.xz ada di folder saat ini
