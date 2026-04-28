@@ -1,0 +1,58 @@
+name: mpls-vpnv4-lab
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 192.168.100.0/24
+
+topology:
+  nodes:
+    # ===== CORE P =====
+    p1:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.11
+      startup-config: configs/p1.cfg
+
+    p2:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.12
+      startup-config: configs/p2.cfg
+
+    # ===== PE =====
+    pe1:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.21
+      startup-config: configs/pe1.cfg
+
+    pe2:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.22
+      startup-config: configs/pe2.cfg
+
+    # ===== CE =====
+    ce1:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.31
+      startup-config: configs/ce1.cfg
+
+    ce2:
+      kind: ceos
+      image: ceos:4.36.0F
+      mgmt-ipv4: 192.168.100.32
+      startup-config: configs/ce2.cfg
+
+  links:
+    # ===== CORE =====
+    - endpoints: ["p1:eth1", "p2:eth1"]
+
+    # ===== PE to CORE =====
+    - endpoints: ["pe1:eth1", "p1:eth2"]
+    - endpoints: ["pe2:eth1", "p2:eth2"]
+
+    # ===== CE =====
+    - endpoints: ["ce1:eth1", "pe1:eth2"]
+    - endpoints: ["ce2:eth1", "pe2:eth2"]

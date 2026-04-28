@@ -106,18 +106,29 @@ topology:
       startup-config: configs/as3.cfg
 
   links:
-    - endpoints: ["tier1-a:eth1", "p1:eth1"]
-    - endpoints: ["tier1-b:eth1", "p2:eth1"]
-    - endpoints: ["p1:eth2", "p2:eth2"]
-    - endpoints: ["p1:eth3", "rr1:eth1"]
-    - endpoints: ["p2:eth3", "rr2:eth1"]
-    - endpoints: ["rr1:eth2", "rr2:eth2"]
-    - endpoints: ["p1:eth4", "pe1:eth1"]
-    - endpoints: ["p2:eth4", "pe2:eth1"]
-    - endpoints: ["pe1:eth2", "pe2:eth2"]
-    - endpoints: ["pe1:eth3", "ce1:eth1"]
-    - endpoints: ["pe2:eth3", "ce2:eth1"]
-    - endpoints: ["pe1:eth4", "iix-sw:eth1"]
-    - endpoints: ["as-member1:eth1", "iix-sw:eth2"]
-    - endpoints: ["as-member2:eth1", "iix-sw:eth3"]
-    - endpoints: ["as-member3:eth1", "iix-sw:eth4"]
+  # ===== TRANSIT (FIXED: NOW TO PE) =====
+  - endpoints: ["tier1-a:eth1", "pe1:eth5"]
+  - endpoints: ["tier1-b:eth1", "pe2:eth5"]
+
+  # ===== CORE =====
+  - endpoints: ["p1:eth2", "p2:eth2"]
+  - endpoints: ["p1:eth3", "rr1:eth1"]
+  - endpoints: ["p2:eth3", "rr2:eth1"]
+  - endpoints: ["rr1:eth2", "rr2:eth2"]
+
+  # ===== PE <-> CORE =====
+  - endpoints: ["p1:eth4", "pe1:eth1"]
+  - endpoints: ["p2:eth4", "pe2:eth1"]
+
+  # ===== PE INTERCONNECT =====
+  - endpoints: ["pe1:eth2", "pe2:eth2"]
+
+  # ===== CUSTOMER =====
+  - endpoints: ["pe1:eth3", "ce1:eth1"]
+  - endpoints: ["pe2:eth3", "ce2:eth1"]
+
+  # ===== IIX =====
+  - endpoints: ["pe1:eth4", "iix-sw:eth1"]
+  - endpoints: ["as-member1:eth1", "iix-sw:eth2"]
+  - endpoints: ["as-member2:eth1", "iix-sw:eth3"]
+  - endpoints: ["as-member3:eth1", "iix-sw:eth4"]
